@@ -37,7 +37,7 @@ pipeline {
       }
     }
 
-    stage('Update GitOps Repo (K8s Manifest)') {
+    stage('Update GitOps Repo (Stable / Canary)') {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
@@ -47,13 +47,21 @@ pipeline {
             git clone https://${GITHUB_TOKEN}@github.com/TAPASHRANJANNANDI/expense-tracker-fullstack-deployment.git gitops
             cd gitops
 
-            sed -i "s|image: tapashranjannandi/expense-tracker-frontend:.*|image: tapashranjannandi/expense-tracker-frontend:${BUILD_NUMBER}|" kubernetes/frontend/deployment.yaml
+            if [ "${BUILD_NUMBER}" -eq 1 ]; then
+              echo "➡ First stable build – updating stable deployment"
+              TARGET_FILE="kubernetes/frontend/deployment.yaml"
+            else
+              echo "➡ Canary build – updating canary deployment"
+              TARGET_FILE="kubernetes/frontend/canary-frontend.yaml"
+            fi
+
+            sed -i "s|image: tapashranjannandi/expense-tracker-frontend:.*|image: tapashranjannandi/expense-tracker-frontend:${BUILD_NUMBER}|" $TARGET_FILE
 
             git config user.email "tapash@gmail.com"
             git config user.name "Tapash"
 
-            git add kubernetes/frontend/deployment.yaml
-            git commit -m "Update frontend image to ${BUILD_NUMBER}" || echo "No changes to commit"
+            git add $TARGET_FILE
+            git commit -m "Update frontend image to ${BUILD_NUMBER} (canary-aware)" || echo "No changes"
             git push origin master
           '''
         }
@@ -63,7 +71,7 @@ pipeline {
 
   post {
     success {
-      echo "✅ CI completed. Argo CD will deploy automatically."
+      echo "✅ CI completed. Argo CD will handle stable/canary rollout."
     }
     failure {
       echo "❌ CI failed. Check Jenkins logs."

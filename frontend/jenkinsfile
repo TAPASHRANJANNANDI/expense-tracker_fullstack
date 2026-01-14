@@ -110,7 +110,7 @@ pipeline {
 
             if [ -f "$TARGET_FILE" ]; then
               echo "🔄 Updating frontend image in: $TARGET_FILE"
-              sed -i "s|image: tapashranjannandi/expense-tracker-frontend:*|image: tapashranjannandi/expense-tracker-frontend:${DOCKER_TAG}|" "$TARGET_FILE"
+              sed -i "s|image: tapashranjannandi/expense-tracker-frontend:.*|image: tapashranjannandi/expense-tracker-frontend:${DOCKER_TAG}|" "$TARGET_FILE"
 
               git config user.email "jenkins@tapash.dev"
               git config user.name "Jenkins CI"

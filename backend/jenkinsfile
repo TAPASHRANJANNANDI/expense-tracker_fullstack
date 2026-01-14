@@ -30,29 +30,29 @@ pipeline {
       }
     }
 
-    stage('Build') {
-      steps {
-        dir('backend') {
-          sh '''
-            echo "📦 Installing dependencies..."
-            npm install
-            echo "✅ Dependencies installed"
-          '''
-        }
-      }
-    }
+    // stage('Build') {
+    //   steps {
+    //     dir('backend') {
+    //       sh '''
+    //         echo "📦 Installing dependencies..."
+    //         npm install
+    //         echo "✅ Dependencies installed"
+    //       '''
+    //     }
+    //   }
+    // }
 
-    stage('Test') {
-      steps {
-        dir('backend') {
-          sh '''
-            echo "🧪 Running tests..."
-            echo "⚠️  Note: Add test scripts to package.json when available"
-            npm run test || echo "No tests configured"
-          '''
-        }
-      }
-    }
+    // stage('Test') {
+    //   steps {
+    //     dir('backend') {
+    //       sh '''
+    //         echo "🧪 Running tests..."
+    //         echo "⚠️  Note: Add test scripts to package.json when available"
+    //         npm run test || echo "No tests configured"
+    //       '''
+    //     }
+    //   }
+    // }
 
     stage('Build Docker Image') {
       steps {

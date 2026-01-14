@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE = "tapashranjannandi/expense-tracker-backend"
+    DOCKER_IMAGE = "tapashranjannandi/expense-app-backend"
     DOCKER_TAG   = "${BUILD_NUMBER}"
     DOCKER_LATEST = "latest"
     GITOPS_REPO  = "https://github.com/TAPASHRANJANNANDI/expense-tracker-fullstack-deployment.git"
@@ -99,7 +99,7 @@ pipeline {
             
             if [ -f "$TARGET_FILE" ]; then
               echo "🔄 Updating backend image in: $TARGET_FILE"
-              sed -i "s|image: tapashranjannandi/expense-tracker-backend:.*|image: tapashranjannandi/expense-tracker-backend:${DOCKER_TAG}|" "$TARGET_FILE"
+              sed -i "s|image: tapashranjannandi/expense-app-backend:.*|image: tapashranjannandi/expense-app-backend:${DOCKER_TAG}|" "$TARGET_FILE"
               
               git config user.email "jenkins@tapash.dev"
               git config user.name "Jenkins CI"

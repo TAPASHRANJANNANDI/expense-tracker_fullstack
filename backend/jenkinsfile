@@ -99,12 +99,12 @@ pipeline {
             
             if [ -f "$TARGET_FILE" ]; then
               echo "🔄 Updating backend image in: $TARGET_FILE"
-              sed -i "s|image: tapashranjannandi/expense-tracker-backend:.*|image: tapashranjannandi/expense-tracker-backend:${DOCKER_TAG}|" $TARGET_FILE
+              sed -i "s|image: tapashranjannandi/expense-tracker-backend:*|image: tapashranjannandi/expense-tracker-backend:${DOCKER_TAG}|" "$TARGET_FILE"
               
               git config user.email "jenkins@tapash.dev"
               git config user.name "Jenkins CI"
               
-              git add $TARGET_FILE
+              git add "$TARGET_FILE"
               git commit -m "ci: Update backend image to ${DOCKER_TAG}" || echo "⚠️  No changes to commit"
               git push origin main
               echo "✅ GitOps repository updated"

@@ -106,7 +106,7 @@ pipeline {
               
               git add $TARGET_FILE
               git commit -m "ci: Update backend image to ${DOCKER_TAG}" || echo "⚠️  No changes to commit"
-              git push origin master
+              git push origin main
               echo "✅ GitOps repository updated"
             else
               echo "⚠️  File not found: $TARGET_FILE"
